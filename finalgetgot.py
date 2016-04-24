@@ -2,17 +2,20 @@ from selenium import webdriver
 import time
 import schedule
 import sys
+import os
 
 
-#Change webdriver.Firefox to webdriver.Chrome if you use Chrome browser
-#Additionally chromedriver.exe to be placed in python/Scripts folder for running Chrome
-#install PhantomJS to python/Scripts folder for prefect running
-#install additional modules selenium and schedule using pip instaler
+#Only works if you have Mozilla Firefox and magnet automatically set for torrent application
+#install additional modules selenium and schedule using pip installer
 
 #Don't freak out by seeing random windows popping up :P
 #This Script requires the system to have : Python3, Torrent Client, PhantomJS , Firefox/Chrome :)
 
 #Enjoy - johny :)
+
+path=os.path.expanduser('~\\AppData\\Roaming\\Mozilla\\Firefox\\Profiles\\')
+path=path+os.listdir(path)[0]
+print(path)
 
 print("GOT Auto Downloader")
 print("For all the GOT fans out there!! Enter the Season and Episode required, eg:-S01E01")
@@ -30,8 +33,9 @@ def mozil():
     try:
         global flag
         flag=1
-        browser = webdriver.Firefox()
-        main_window = browser.current_window_handle
+        profile = webdriver.FirefoxProfile(path)
+        browser = webdriver.Firefox(profile)
+        
         browser.get(url)
         
         el=browser.find_element_by_partial_link_text(url2).click();
@@ -39,9 +43,8 @@ def mozil():
         time.sleep(1)
         el2=browser.find_element_by_id('magnetdl').click();
             
-        st1=browser.title
-            
-            
+        time.sleep(2)
+        browser.quit()
             
     except:
             
