@@ -15,30 +15,31 @@ import os
 
 path=os.path.expanduser('~\\AppData\\Roaming\\Mozilla\\Firefox\\Profiles\\')
 path=path+os.listdir(path)[0]
-print(path)
+
 
 print("GOT Auto Downloader")
 print("For all the GOT fans out there!! Enter the Season and Episode required, eg:-S01E01")
 print("It will automatically wait for any future episodes")
 
-url1="http://www.1377x.to/srch?search=game+of+thrones+"
-url2=input("S0?E?")
+url=["http://www.1377x.to/srch?search=game.of.thrones+","http://www.1377x.to/srch?search=game+of+thrones+","http://www.1377x.to/srch?search=thrones+"]
+urlx=input("\nS0?E?: ")
+
 print("Please wait :) :)")
-url=url1+url2
+
 flag=0
 
 
 
-def mozil():
+def mozil(urlf):
     try:
         global flag
         flag=1
         profile = webdriver.FirefoxProfile(path)
         browser = webdriver.Firefox(profile)
         
-        browser.get(url)
+        browser.get(urlf)
         
-        el=browser.find_element_by_partial_link_text(url2).click();
+        el=browser.find_element_by_partial_link_text(urlx).click();
         
         time.sleep(1)
         el2=browser.find_element_by_id('magnetdl').click();
@@ -53,12 +54,23 @@ def mozil():
 def job():
     try:
         browser = webdriver.PhantomJS()
-        browser.get(url)
-        el=browser.find_element_by_partial_link_text(url2).click();
+        for i in url:
+            if flag==0:
+                try:
+                    browser.get(i+urlx)
+                    el=browser.find_element_by_partial_link_text(urlx).click();
+                    flag=1
+                    urlf=i
+                    break
+                except:
+                    flag=0
+        if flag==0:
+            raise Exception
             
         browser.quit()
-        mozil()
-    except:
+        mozil(urlf)
+        
+    except Exception:
         print('I will wait more!')
         browser.quit()
 
